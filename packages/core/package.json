@@ -1,0 +1,8 @@
+{
+  "name": "@newcary/core",
+  "description": "The core package of newcary.",
+  "dependencies": {
+    "@vue/reactivity": "^3.5.13",
+    "canvaskit-wasm": "^0.39.1"
+  }
+}

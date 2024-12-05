@@ -1,0 +1,7 @@
+{
+  "name": "@newcary/widgets",
+  "description": "The built-in widgets of newcary.",
+  "dependencies": {
+    "@newcary/core": "workspace:*"
+  }
+}

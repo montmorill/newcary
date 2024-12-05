@@ -1,0 +1,26 @@
+{
+  "name": "newcary",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "An even better animation engine & ecosystem.",
+  "author": "montmorill",
+  "license": "ISC",
+  "keywords": [
+    "animation"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^3.9.2",
+    "typescript": "^5.7.2"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  }
+}
