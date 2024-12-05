@@ -13,6 +13,9 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
+  "dependencies": {
+    "canvaskit-wasm": "^0.39.1"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "^3.9.2",
     "typescript": "^5.7.2"
