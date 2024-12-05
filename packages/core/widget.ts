@@ -18,7 +18,7 @@ export class Widget implements Positional, Scalable {
     return this
   }
 
-  animations: AnimationInstance<this, unknown>[]
+  animations: AnimationInstance<this, unknown>[] = []
   animate<A>(
     animation: Animation<this, A>,
     context: Omit<AnimationInstance<this, A>, 'animation' | 'target'>,
