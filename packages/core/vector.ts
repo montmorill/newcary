@@ -1,18 +1,9 @@
-export interface Vector {
-  x: number
-  y: number
-}
+export type Vector = [x: number, y: number]
 
-export function vector(x: number = 0, y: number = x): Vector {
-  return { x, y }
-}
+export const vector = (x: number = 0, y: number = x): Vector => [x, y]
 
-export const copy = (vec: Vector): Vector => vector(vec.x, vec.y)
-export const neg = (vec: Vector): Vector => vector(-vec.x, -vec.y)
-export const add = (left: Vector, right: Vector): Vector => vector(left.x + right.x, left.y + right.y)
-export const sub = (left: Vector, right: Vector): Vector => add(left, neg(right))
-export const mul = (vec: Vector, scalar: number): Vector => vector(vec.x * scalar, vec.y * scalar)
-export const div = (vec: Vector, scalar: number): Vector => mul(vec, 1 / scalar)
-export const dot = (left: Vector, right: Vector): number => left.x * right.x + left.y * right.y
-export const magnitude = (vec: Vector): number => Math.sqrt(dot(vec, vec))
-export const normalized = (vec: Vector): Vector => div(vec, magnitude(vec))
+export const neg = ([x, y]: Vector): Vector => [-x, -y]
+export const add = ([x1, y1]: Vector, [x2, y2]: Vector): Vector => [x1 + x2, y1 + y2]
+export const sub = ([x1, y1]: Vector, [x2, y2]: Vector): Vector => [x1 - x2, y1 - y2]
+export const mul = ([x, y]: Vector, scalar: number): Vector => [x * scalar, y * scalar]
+export const div = ([x, y]: Vector, scalar: number): Vector => [x / scalar, y / scalar]

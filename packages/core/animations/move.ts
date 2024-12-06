@@ -1,6 +1,6 @@
+import type { Vector } from '../vector'
 import { defineAnimation } from '../animation'
-import { interpolateVector, transitionVector } from '../interpolate'
-import { copy, type Vector } from '../vector'
+import { interpolates, transitions } from '../interpolate'
 
 export interface Positional {
   position: Vector
@@ -8,12 +8,12 @@ export interface Positional {
 
 export const move = defineAnimation(
   (target: Positional, diff: Vector) => {
-    return transitionVector(copy(target.position), diff, target.position)
+    return transitions([...target.position], diff, target.position)
   },
 )
 
 export const moveTo = defineAnimation(
   (target: Positional, to: Vector) => {
-    return interpolateVector(copy(target.position), to, target.position)
+    return interpolates([...target.position], to, target.position)
   },
 )

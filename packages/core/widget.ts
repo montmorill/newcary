@@ -42,8 +42,8 @@ export class Widget implements Positional, Scalable {
 
   update(canvas: Canvas, elapsed: number): void {
     canvas.save()
-    canvas.translate(this.position.x, this.position.y)
-    canvas.scale(this.scale.x, this.scale.y)
+    canvas.translate(...this.position)
+    canvas.scale(...this.scale)
     this.tick(elapsed)
     this.draw(canvas)
     this.children.forEach(child => child.update(canvas, elapsed))
