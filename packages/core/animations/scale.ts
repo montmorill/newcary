@@ -6,14 +6,10 @@ export interface Scalable {
   scale: Vector
 }
 
-export const scale = defineAnimation(
-  (target: Scalable, diff: Vector) => {
-    return transitions([...target.scale], diff, target.scale)
-  },
-)
+export const scale = defineAnimation((target: Scalable, diff: Vector) => {
+  return transitions([...target.scale], diff, target.scale)
+})
 
-export const scaleTo = defineAnimation(
-  (target: Scalable, to: Vector) => {
-    return interpolates([...target.scale], to, target.scale)
-  },
-)
+export const scaleTo = defineAnimation((target: Scalable, to: Vector) => {
+  return interpolates([...target.scale], to, target.scale)
+})

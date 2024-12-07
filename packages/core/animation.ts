@@ -11,21 +11,11 @@ export interface AnimationInstance<T, A> {
   animator?: Animator
 }
 
-export function defineAnimation<T, A = object>(
-  setup: Animation<T, A>,
-  dispose?: (target: T) => void,
-): Animation<T, A> {
-  if (!dispose)
-    return setup
-
-  return function (target, context) {
-    const animator = setup(target, context)
-    return (progress, done) => {
-      animator(progress, done)
-      if (done)
-        dispose(target)
-    }
-  }
+export function defineAnimation<U extends unknown[]>(
+  animation: (...args: U) => Animator,
+): U extends [infer T, infer A] ? Animation<T, A>
+    : U extends [infer T] ? Animation<T, object> : never {
+  return animation as any
 }
 
 /**
