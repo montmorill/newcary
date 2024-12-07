@@ -1,4 +1,4 @@
-import type { Canvas } from 'canvaskit-wasm'
+import type { Canvas, CanvasKit } from 'canvaskit-wasm'
 import type { Widget } from './widget'
 
 export interface App {
@@ -7,7 +7,7 @@ export interface App {
   stop: () => void
 }
 
-export function createApp(canvas: Canvas, root: Widget): App {
+export function createApp(sk: CanvasKit, canvas: Canvas, root: Widget): App {
   const startAt = performance.now()
   let playing: boolean = false
   let handle: number
@@ -28,7 +28,7 @@ export function createApp(canvas: Canvas, root: Widget): App {
   }
   function update(timestamp: DOMHighResTimeStamp): void {
     const elapsed = timestamp - startAt
-    app.root.update(canvas, elapsed)
+    app.root.update(sk, canvas, elapsed)
     if (playing)
       handle = requestAnimationFrame(update)
   }

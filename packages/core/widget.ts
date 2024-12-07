@@ -1,4 +1,4 @@
-import type { Canvas } from 'canvaskit-wasm'
+import type { Canvas, CanvasKit } from 'canvaskit-wasm'
 import type { Animation, AnimationInstance } from './animation'
 import type { Positional } from './animations/move'
 import type { Scalable } from './animations/scale'
@@ -38,15 +38,18 @@ export class Widget implements Positional, Scalable {
     )
   }
 
-  draw(_canvas: Canvas): void { /* Waiting for overriding... */ }
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  draw(canvas: Canvas, sk: CanvasKit): void {
+    // Waiting for overriding...
+  }
 
-  update(canvas: Canvas, elapsed: number): void {
+  update(sk: CanvasKit, canvas: Canvas, elapsed: number): void {
     canvas.save()
     canvas.translate(...this.position)
     canvas.scale(...this.scale)
     this.tick(elapsed)
-    this.draw(canvas)
-    this.children.forEach(child => child.update(canvas, elapsed))
+    this.draw(canvas, sk)
+    this.children.forEach(child => child.update(sk, canvas, elapsed))
     canvas.restore()
   }
 }
