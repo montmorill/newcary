@@ -8,8 +8,8 @@ export interface App {
 }
 
 export function createApp(sk: CanvasKit, canvas: Canvas, root: Widget): App {
-  const startAt = performance.now()
   let playing: boolean = false
+  let startAt: DOMHighResTimeStamp
   let handle: number
   const app: App = {
     root,
@@ -27,6 +27,9 @@ export function createApp(sk: CanvasKit, canvas: Canvas, root: Widget): App {
     },
   }
   function update(timestamp: DOMHighResTimeStamp): void {
+    if (!startAt) {
+      startAt = timestamp
+    }
     const elapsed = timestamp - startAt
     app.root.update(sk, canvas, elapsed)
     if (playing)
