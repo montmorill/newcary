@@ -20,8 +20,7 @@ export function runInContext<T>(context: Context, body: () => T): T {
   const prevContext = activeContext
   activeContext = context
   try {
-    const value = body()
-    return value
+    return body()
   }
   finally {
     activeContext = prevContext

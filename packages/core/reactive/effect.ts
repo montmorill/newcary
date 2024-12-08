@@ -57,8 +57,7 @@ export function effect(fn: () => unknown, { lazy = false, scheduler }: EffectOpt
     const prevEffect = activeEffect
     activeEffect = e
     try {
-      const value = fn()
-      return value
+      return fn()
     }
     finally {
       activeEffect = prevEffect
