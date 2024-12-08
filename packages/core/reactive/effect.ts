@@ -6,7 +6,7 @@ export type Effect = EffectMetadata & (() => unknown)
 
 export interface EffectScope {
   children: EffectScope[]
-  effects: Set<Effect>
+  effects: Effect[]
 }
 
 let activeEffect: Effect | undefined = void 0
@@ -22,7 +22,7 @@ export function getCurrentScope(): EffectScope | undefined {
 }
 
 export function createScope(detached = false): EffectScope {
-  const scope: EffectScope = { children: [], effects: new Set() }
+  const scope: EffectScope = { children: [], effects: [] }
   if (!detached && activeScope)
     activeScope.children.push(scope)
   return scope
@@ -42,13 +42,12 @@ export function runInScope(scope: EffectScope, body: () => void): void {
 export function clearScope(scope: EffectScope): void {
   scope.children.forEach(v => clearScope(v))
   scope.effects.forEach(v => cleanup(v))
-  scope.effects.clear()
+  scope.effects.length = 0
 }
 
 export function cleanup(e: Effect): void {
   e.history.forEach(i => i.delete(e))
   e.history.length = 0
-  e.scope?.effects.delete(e)
 }
 
 export function effect(fn: () => unknown, { lazy = false, scheduler }: EffectOptions = {}): Effect {
@@ -68,8 +67,8 @@ export function effect(fn: () => unknown, { lazy = false, scheduler }: EffectOpt
   e.scheduler = scheduler
   e.scope = activeScope
 
-  if (activeScope)
-    activeScope.effects.add(e)
+  if (activeScope != null)
+    activeScope.effects.push(e)
 
   if (!lazy)
     e()
