@@ -38,7 +38,9 @@ function lookup<T>(key: InjectionKey<T>): Context | undefined {
 
 export function provide<T>(key: InjectionKey<T>, value: T): void {
   if (activeContext.has(key)) {
-    throw new TypeError('...')
+    // todo: should it overwrite or throw the new value
+    // todo: warn: a key should not be provided in an identical context multiple times
+    return
   }
 
   activeContext.set(key, value)

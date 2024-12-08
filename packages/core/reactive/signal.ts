@@ -11,6 +11,7 @@ export function signal<T>(initialValue: T, { equals = Object.is }: SignalOptions
   const bucket: EffectBucket = new Set()
   let value: T = initialValue
 
+  // todo: should we merge the setter and the mapper
   const setter: Setter<T> = (x) => {
     if (equals && equals(x, value))
       return

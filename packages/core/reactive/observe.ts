@@ -5,6 +5,7 @@ import { cleanup, clearScope, createScope, type Effect, effect, type EffectOptio
 export type ObserveFn = (onInvalidate: (fn: () => void) => void) => void
 
 export function observe(fn: ObserveFn, options?: Omit<EffectOptions, 'lazy'>): DisposeFn {
+  // todo: composable api
   const invalidateFn = new Set<() => void>()
   const onInvalidate = (fn: () => void): void => {
     invalidateFn.add(fn)

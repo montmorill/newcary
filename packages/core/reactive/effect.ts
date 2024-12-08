@@ -1,8 +1,9 @@
 export type EffectBucket = Set<Effect>
-export interface EffectOptions { scheduler?: EffectScheduler, lazy?: boolean }
 export type EffectScheduler = (effect: Effect) => void
-export interface EffectMetadata { history: EffectBucket[], scheduler?: EffectScheduler, scope?: EffectScope }
 export type Effect = EffectMetadata & (() => unknown)
+
+export interface EffectOptions { scheduler?: EffectScheduler, lazy?: boolean }
+export interface EffectMetadata { history: EffectBucket[], scheduler?: EffectScheduler, scope?: EffectScope }
 
 export interface EffectScope {
   children: EffectScope[]
@@ -40,8 +41,8 @@ export function runInScope(scope: EffectScope, body: () => void): void {
 }
 
 export function clearScope(scope: EffectScope): void {
-  scope.children.forEach(v => clearScope(v))
-  scope.effects.forEach(v => cleanup(v))
+  scope.children.forEach(clearScope)
+  scope.effects.forEach(cleanup)
   scope.effects.length = 0
 }
 
@@ -51,10 +52,10 @@ export function cleanup(e: Effect): void {
 }
 
 export function effect(fn: () => unknown, { lazy = false, scheduler }: EffectOptions = {}): Effect {
-  const e = (() => {
-    cleanup(e)
+  const effectFn = (() => {
+    cleanup(effectFn)
     const prevEffect = activeEffect
-    activeEffect = e
+    activeEffect = effectFn
     try {
       return fn()
     }
@@ -63,17 +64,17 @@ export function effect(fn: () => unknown, { lazy = false, scheduler }: EffectOpt
     }
   }) as Effect
 
-  e.history = []
-  e.scheduler = scheduler
-  e.scope = activeScope
+  effectFn.history = []
+  effectFn.scheduler = scheduler
+  effectFn.scope = activeScope
 
   if (activeScope != null)
-    activeScope.effects.push(e)
+    activeScope.effects.push(effectFn)
 
   if (!lazy)
-    e()
+    effectFn()
 
-  return e
+  return effectFn
 }
 
 export function track(bucket: EffectBucket): void {
