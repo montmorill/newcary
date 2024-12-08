@@ -1,15 +1,15 @@
 import type { Vector } from '../vector'
 import { defineAnimation } from '../animation'
-import { interpolates, transitions } from '../interpolate'
+import { assign, interpolates, transitions } from '../utils'
 
 export interface Scalable {
   scale: Vector
 }
 
 export const scale = defineAnimation((target: Scalable, diff: Vector) => {
-  return transitions([...target.scale], diff, target.scale)
+  return assign(target, 'scale', transitions([...target.scale], diff))
 })
 
 export const scaleTo = defineAnimation((target: Scalable, to: Vector) => {
-  return interpolates([...target.scale], to, target.scale)
+  return assign(target, 'scale', interpolates([...target.scale], to))
 })

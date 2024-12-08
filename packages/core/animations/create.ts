@@ -1,19 +1,14 @@
 import { defineAnimation } from '../animation'
-import { interpolate } from '../interpolate'
+import { assign, interpolate } from '../utils'
 
 export interface Creatable {
   progress: number
 }
 
 export const create = defineAnimation((target: Creatable, { from = 0, to = 1 }) => {
-  const interpolater = interpolate(from, to)
-  return (progress) => {
-    target.progress = interpolater(progress)
-  }
+  return assign(target, 'progress', interpolate(from, to))
 })
 
-export const destroy = defineAnimation((target: Creatable) => {
-  return (progress) => {
-    target.progress = 1 - progress
-  }
+export const destroy = defineAnimation((target: Creatable, { from = 1, to = 0 }) => {
+  return assign(target, 'progress', interpolate(from, to))
 })
