@@ -9,31 +9,32 @@ export interface App {
 
 export function createApp(sk: CanvasKit, canvas: Canvas, root: Widget): App {
   let playing: boolean = false
-  let startAt: DOMHighResTimeStamp
+  let updated: DOMHighResTimeStamp
+  let elapsed: number = 0
   let handle: number
   const app: App = {
     root,
     play() {
       if (!playing) {
         playing = true
-        handle = requestAnimationFrame(update)
+        handle = requestAnimationFrame((timestamp: DOMHighResTimeStamp) => {
+          updated = timestamp
+          update(timestamp)
+        })
       }
     },
     stop() {
       if (playing) {
-        playing = false
         cancelAnimationFrame(handle)
+        playing = false
       }
     },
   }
   function update(timestamp: DOMHighResTimeStamp): void {
-    if (!startAt) {
-      startAt = timestamp
-    }
-    const elapsed = timestamp - startAt
+    elapsed += timestamp - updated
+    updated = timestamp
     app.root.update(sk, canvas, elapsed)
-    if (playing)
-      handle = requestAnimationFrame(update)
+    handle = requestAnimationFrame(update)
   }
   return app
 }
